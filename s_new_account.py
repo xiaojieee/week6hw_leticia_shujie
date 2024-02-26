@@ -85,7 +85,7 @@ class Account:
     def input_pin(self):
         attempts = 3
         for i in range(3):
-            pin = int(pwinput.pwinput(f"Enter pin for {self.get_firstname()}: "))
+            pin = int(input(f"Enter pin for {self.get_firstname()}: "))
             attempts -= 1
             if pin == self.__pin:
                 return pin
