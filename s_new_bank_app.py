@@ -37,5 +37,16 @@ print(bart_account)
 
 
 Marge_account = Account(20, 'Marge', 'Bouvier', 1111)
-
 print(Marge_account)
+
+Marge_account.set_lastname('Simpson')
+print(Marge_account)
+
+Homer_account = Account(50, 'Homer', 'Simpson', 2222)
+print(Homer_account)
+
+Homer_account.set_new_pin(3333)
+Homer_account.withdraw(5, 2222)
+print(Homer_account)
+Homer_account.withdraw(5, 3333)
+print(Homer_account)

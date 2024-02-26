@@ -73,11 +73,29 @@ class Account:
 # every object orientation language will have a 'self', other languages will hide it
 # zero parameter that is 'self'
 
-# overriding a built-method
+# overriding a built-in method
     def __str__(self):
-        pin = int(pwinput.pwinput("Enter your pin:"))
+        pin = self.input_pin()
         if pin == self.__pin:
             return (f"Account\nFirst Name: {self.get_firstname()}\nLast Name: {self.get_lastname()}"
                     f"\nBalance: ${self.get_balance(pin)}\n--------------------------")
         else:
-            return f"Incorrect pin for {self.get_firstname()}"
+            return "You have no attempts left, please try again later."
+
+    def input_pin(self):
+        attempts = 3
+        for i in range(3):
+            pin = int(pwinput.pwinput(f"Enter pin for {self.get_firstname()}: "))
+            attempts -= 1
+            if pin == self.__pin:
+                return pin
+            else:
+                print(f"Incorrect pin for {self.get_firstname()}, {attempts} attempts left.")
+        return None
+
+# added pin codes from the previous exercise
+# defined a new function within the class for the inputting pin code
+
+    def set_new_pin(self, new_pin):
+        self.__pin = new_pin
+    # created a setter for the user to change their pin code
