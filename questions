@@ -1,0 +1,4 @@
+1. How can I get the user to input the details rather than manually inputting the parameters?
+2. hasattr - I understand it views objects or methods within a class. How do I view attributes?
+3. What is the best way to create subclasses or be able to practice inheritence within Account Class as we saw repeated code?
+4. Struggled: Understanding how data is stored and retrieved within a class?

@@ -1,13 +1,109 @@
-# this is our capsule
-# it is a collection of attributes and methods
-# classes always have a capitalisation 'Account'
-from random import randint
-import secrets
+import random
 
 
+# this is our capsule: collection of attributes and methods
+#  uses CapWord conventions - classes always have a capitalisation 'Account'
+# declaring class Account
+class Account:
+    # attribute used to keep count of number of account objects created
+    numCreated = 0
+
+    # this is a special method called the CONSTRUCTOR
+    # a constructor method is used to get your object ready to be used and when create instance of a class
+    # change account number, sort code, account type, pin
+    # sets the initial attributes of the object
+    # initialises the object attributes
+    def __init__(self, initial_amount, firstname, lastname, pin):
+        self._balance = int(initial_amount)
+        self.first_name = firstname.capitalize()
+        self.__last_name = str(lastname).capitalize()
+        self.__pin = pin  # Assigning the provided PIN directly
+        self._account_number = self.generate_account_number()  # Assigning unique account number
+        Account.numCreated += 1
+
+    # todo CANT GET TO STORE ACCOUNT NUMBER RANDOM GEN NUMBERS
+    def generate_account_number(self):
+        # Incrementing the total number of accounts created
+        account_number = Account.numCreated + 1
+        # Generating a random string of six digits
+        # https://blog.finxter.com/python-how-to-generate-a-random-number-with-a-specific-amount-of-digits/
+        # stringifies random integers from 0 - - to use string join function to get one string in 6 digits
+        random_digits = ''.join(str(random.randint(0, 9)) for _ in range(7))
+        # Combining the account number and random digits
+        return f"{account_number}{random_digits}"
+
+    # Method to deposit money into the account
+    def deposit(self, amount, pin):
+        if amount >= 0 and pin == self.__pin:
+            self._balance += amount
+            return self._balance
+
+    # Method to withdraw money from the account
+    def withdraw(self, amount, pin):
+        if amount >= 0 and pin == self.__pin and self._balance - amount >= 0:
+            self._balance -= amount
+        else:
+            print("Incorrect PIN or negative amount!")
+
+    # Method to get the current balance of the account
+    # TODO: GETTERS
+    # Methods to set a new last name for the account
+    # getters READ and setters WRITE
+    # getters RETURN something, setters do not
+    # getters can translate or modify the data before returning it
+    def get_balance(self, pin):
+        if pin == self.__pin:
+            return self._balance
+
+    def get_firstname(self, pin):
+        if pin == self.__pin:
+            return self.first_name
+
+    def get_lastname(self):
+        return self.__last_name
+
+    # setters: set or write a piece of information
+    # setters have parameters
+    # setters often validate incoming data
+    # setters often contain if statements
+    def set_lastname(self, new_lastname):
+        self.__last_name = new_lastname
+
+
+    # Method to display account details, including PIN verification
+    def input_pin(self):
+        attempts = 3
+        while attempts > 0:
+            entered_pin = input(f"Enter pin for {self.get_firstname(self.__pin)}: ")
+            if int(entered_pin) == self.__pin:
+                    return True
+            else:
+                attempts -= 1
+                if attempts > 0:
+                    print(f"Incorrect pin! {attempts} attempts left.")
+                else:
+                    print("You have no attempts left, please try again later.")
+        return False
+
+    # stringification function as object references are not normally printable
+    def __str__(self):
+        # added num of account objects created from numCreate attribute
+        return (f"{'*' * 15} ACCOUNT DETAILS  {'*' * 15}\n"
+                f"Account No: {self._account_number}\n"
+                f"Name: {self.get_firstname(self.__pin)} {self.get_lastname()}"
+                f"\nBalance: ${self.get_balance(self.__pin)}")
+
+
+
+
+
+
+
+
+# TODO EXTRA:
 # create a parent class user: Account_holder - add pin feature but get to be four random numbers
 # details of user stored
-# TODO: CREATE A CLASS USER TO STORE DATA
+# TODO: CREATE A CLASS USER  TO STORE DATA (TRY TO CREATE HIEARCHY)
 # class User:
 #     def __init__(self, firstname, lastname, age, account_type):
 #         self.first_name = firstname
@@ -19,112 +115,7 @@ import secrets
 #     def show_details(self):
 #         print(f"Personal Details\n Name: {self.first_name, self.last_name}\n Age: {self.age}\n "
 #                f"Account Type: {self.account_type}")
-
-
-# TODO ACCOUNT CLASS: ADD RANDOM 4 DIGITS AS PIN
-class Account:
-    numCreated = 0
-
-    # this is a special method called the CONSTRUCTOR
-    # a constructor method is used to get your object ready to be used and when create instance of a class
-    # change account number, sort code, account type, pin
-    # sets the initial attributes of the object
-    def __init__(self, initial_amount, firstname, lastname, pin):
-        # self.first_name = firstname
-        # self.first_name = lastname
-        # super().__init__(firstname, lastname, age, account_type)
-        # _balance is an attribute, it's piece of data
-        # self is an object pointer: points to whoever bank account who we are calling at that moment
-        # _ is an identifier which is special
-        #  __ donder on fields means PRIVATE - KEEP OUT
-        self._balance = initial_amount
-        self.first_name = str(firstname)
-        self.__last_name = str(lastname)
-        # self.pin = self.generate_random_pin()
-        self.__pin = pin
-        Account.numCreated += 1
-
-    # def generate_random_pin(self):
-    #     random_pin = str(randint(1000, 9999))
-    #     self.pin = random_pin
-    #     return random_pin
-    #
-    # def verify_pin(self, entered_pin):
-    #     return self.pin == entered_pin
-
-    # def __init__(self, account_holder, balance=0):
-    #     self.account_holder = account_holder
-    #     self.balance = balance
-
-    # method = functionality - incorporating behaviour, encapsulating the primary behaviours of the bank account
-    # _ python way to not view this when the function is called
-    # _ single underscore means this field is semi private
-    def deposit(self, amount, pin):
-        if amount >= 0 and pin == self.__pin:
-            self._balance += amount
-        # can add up to a certain amount to the account
-
-    # functionality method
-    def withdraw(self, amount, pin):
-        if amount >= 0 and pin == self.__pin:
-            self._balance -= amount
-            # validation
-            if amount >= 0:
-                self._balance -= amount
-            else:
-                print("Insufficient funds!")
-
-
-    # TODO: GETTERS
-    def get_balance(self, pin):
-        if pin == self.__pin:
-            return self._balance
-
-    # create a getter method to retrieve first_name attribute (retrieve bank account holders name)
-    def get_firstname(self, pin):
-        if pin == self.__pin:
-          return self.first_name
-
-    # create a getter method to retrieve the last_name attribute
-    def get_lastname(self):
-        return self.__last_name
-
-    # TODO: CREATES A SETTER
-    # setters: set or write a piece of information
-    # getters READ and setters WRITE
-    # setters have parameters
-    # getters RETURN something, setters do not
-    # getters can translate or modify the data before returning it
-    # setters often validate incoming data
-    # setters often contain if statements
-    def set_lastname(self, new_lastname):
-        self.__last_name = new_lastname
-
-    # ADDED DISPLAY
-    # def __str__(self):
-    #     return f"Account\nFirstname: {self.get_firstname()}\nLastname: {self.get_lastname()}" \
-    #            f"\nBalance: ${self.getbalance()}\nPin:{self.pin}\n{'*' * 25}"
-
-
-# overriding a built-in method
-    def __str__(self, pin):
-        pin = self.input_pin()
-        if pin == self.__pin:
-            return (f"Account\nFirst Name: {self.get_firstname()}\nLast Name: {self.get_lastname()}"
-                    f"\nBalance: ${self.get_balance(pin)}\n--------------------------")
-        else:
-            return "You have no attempts left, please try again later."
-
-    def input_pin(self):
-        attempts = 3
-        for i in range(3):
-            pin = int(input(f"Enter pin for {self.get_firstname()}: "))
-            attempts -= 1
-            if pin == self.__pin:
-                return pin
-            else:
-                print(f"Incorrect pin for {self.get_firstname()}, {attempts} attempts left.")
-        return None
-
-# added pin codes from the previous exercise
-# defined a new function within the class for the inputting pin code
+# TODO CREATE A Randomly generated PIN
+# Method to generate a random 4-digit PIN (You can comment this out if you're providing the PIN directly)
+# def generate_random_pin(self):
+#     return str(random.randint(1000, 9999))
