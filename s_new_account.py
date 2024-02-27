@@ -1,4 +1,3 @@
-import pwinput
 # Exercise
 # Everything under class is indented
 # it's a collection of attributes and methods
